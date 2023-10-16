@@ -4,6 +4,7 @@ import pandas as pd
 from NN import NN_classfier
 from kNNRFSVM import kNNRFSVM
 from stacking import knntreesvm
+from bagging import nbtree
 import torch
 import os.path
 import numpy as np
@@ -48,4 +49,6 @@ if __name__ == '__main__':
     kNNRFSVM(X_train, X_test, y_train, y_test)
     print('Ensebly classifier no. 2: \n')
     knntreesvm(X_train, X_test, y_train, y_test)
+    print('Ensebly classifier no. 3: \n')
+    nbtree(X_train, X_test, y_train, y_test)
     
