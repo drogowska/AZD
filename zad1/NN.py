@@ -26,7 +26,7 @@ class Data(Dataset):
     return self.len
 
 class Network(nn.Module):
-    _hidden_layers = 5560
+    _hidden_layers = 256
 
     def __init__(self, _output_dim, _input_dim):
         self._input_dim = _input_dim
@@ -62,8 +62,7 @@ def NN_classfier(X_train, X_test, y_train, y_test):
         acc =0
         for epoch in range(EPOCHS):
             running_loss = 0.0
-            epoch_loss = []
-            epoch_acc = []
+
             for i, data in enumerate(trainloader, 0):
                 inputs, labels = data
                 optimizer.zero_grad()            
@@ -73,7 +72,6 @@ def NN_classfier(X_train, X_test, y_train, y_test):
                 loss.backward()     # backward propagation
                 optimizer.step()
                 running_loss += loss.item()
-                ps = torch.exp(outputs)
 
             print(f'[{epoch + 1}, {i + 1:5d}] loss: {running_loss / len(trainloader) }')
 
