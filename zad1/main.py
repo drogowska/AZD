@@ -5,6 +5,7 @@ from NN import NN_classfier
 from kNNRFSVM import kNNRFSVM
 import torch
 import os.path
+import numpy as np
 
 def preprocessing(): 
     if not os.path.isfile("./zad1/data/X_train.csv"):       
@@ -28,6 +29,8 @@ def preprocessing():
         X_test = pd.read_csv("./zad1/data/X_test.csv").values[:,1:]
         y_train = pd.read_csv("./zad1/data/y_train.csv").values[:,1:]
         X_train = pd.read_csv("./zad1/data/X_train.csv").values[:,1:]
+        y_train = np.concatenate(y_train, axis=0)
+        y_test = np.concatenate(y_test, axis=0)
         return X_train, X_test, y_train, y_test
 
 

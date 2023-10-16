@@ -7,7 +7,9 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 import warnings
 from sklearn.svm import SVC
-
+import seaborn as sns
+import pandas as pd
+import matplotlib.pyplot as plt
 
 warnings.filterwarnings('ignore')
 algs = [KNeighborsClassifier(), RandomForestClassifier(), SVC()]
@@ -42,11 +44,11 @@ def kNNRFSVM(X_train, X_test, y_train, y_test):
     ensemble.fit(X_train, y_train)
     acc = ensemble.score(X_test, y_test)
     pred = ensemble.predict(X_test)
-    print(acc)
     
     print('knn: {}'.format(best_parm[0].score(X_test, y_test)) + ', params: {}'.format(gss[0].best_params_))
     print('rf: {}'.format(best_parm[1].score(X_test, y_test)) + ', params: {}'.format(gss[1].best_params_))
     print('svm: {}'.format(best_parm[2].score(X_test, y_test)) + ', params: {}'.format(gss[2].best_params_))
 
-    print(confusion_matrix(y_test, pred))
+    sns.heatmap(pd.DataFrame(confusion_matrix(y_test, y_pred)), annot=True)
+    plt.show()
     print(classification_report(y_test, pred))
