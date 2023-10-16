@@ -46,8 +46,6 @@ class Network(nn.Module):
 def run():
     torch.multiprocessing.freeze_support()
 
-# if __name__ == '__main__':
-#     run()
 
 def NN_classfier(X_train, X_test, y_train, y_test):
     run()
@@ -75,10 +73,7 @@ def NN_classfier(X_train, X_test, y_train, y_test):
                 loss.backward()     # backward propagation
                 optimizer.step()
                 running_loss += loss.item()
-
                 ps = torch.exp(outputs)
-                top_p , top_class = ps.topk(1,dim=1)
-                equals = top_class == labels.view(*top_class.shape)
 
             print(f'[{epoch + 1}, {i + 1:5d}] loss: {running_loss / len(trainloader) }')
 

@@ -2,6 +2,10 @@ from sklearn.ensemble import BaggingClassifier, VotingClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.naive_bayes import GaussianNB
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.metrics import confusion_matrix, classification_report
+import pandas as pd
 # Load the dataset
 
 def nbtree(X_train, X_test, y_train, y_test):
@@ -21,4 +25,7 @@ def nbtree(X_train, X_test, y_train, y_test):
     y_pred = ensemble.predict(X_test)
     # Calculate accuracy
     accuracy = accuracy_score(y_test, y_pred)
-    print("Accuracy:", accuracy)
+    # print("Accuracy:", accuracy)
+    sns.heatmap(pd.DataFrame(confusion_matrix(y_test, y_pred)), annot=True)
+    plt.show()
+    print(classification_report(y_test, y_pred))
