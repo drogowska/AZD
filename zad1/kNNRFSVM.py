@@ -52,3 +52,4 @@ def kNNRFSVM(X_train, X_test, y_train, y_test):
     sns.heatmap(pd.DataFrame(confusion_matrix(y_test, y_pred)), annot=True)
     plt.show()
     print(classification_report(y_test, pred))
+    return y_pred

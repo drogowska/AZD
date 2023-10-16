@@ -100,3 +100,4 @@ def NN_classfier(X_train, X_test, y_train, y_test):
     sns.heatmap(confusion_matrix_df, annot=True)
     plt.show()
     print(classification_report(y_test, y_pred))
+    return y_pred
