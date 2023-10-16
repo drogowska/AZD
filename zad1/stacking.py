@@ -8,6 +8,9 @@ from sklearn.svm import SVC
 from sklearn.ensemble import StackingClassifier
 from matplotlib import pyplot
 from sklearn.metrics import confusion_matrix, classification_report
+import seaborn as sns
+import pandas as pd
+import matplotlib.pyplot as plt
 
 def knntreesvm(X_train, X_test, y_train, y_test):
 
@@ -37,9 +40,11 @@ def knntreesvm(X_train, X_test, y_train, y_test):
         names.append(name)
         print('%s %.3f (%.3f)' % (name, mean(scores), std(scores)))
     # plot model performance for comparison
-    pyplot.boxplot(results, labels=names, showmeans=True)
-    pyplot.show()
-
+    # pyplot.boxplot(results, labels=names, showmeans=True)
+    # pyplot.show()
+    sns.heatmap(pd.DataFrame(confusion_matrix(y_test, y_pred)), annot=True)
+    plt.show()
+    return y_pred
 
 
 
