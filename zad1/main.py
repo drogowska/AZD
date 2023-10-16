@@ -3,12 +3,13 @@ from sklearn.model_selection import train_test_split
 import pandas as pd
 from NN import NN_classfier
 from kNNRFSVM import kNNRFSVM
+from stacking import knntreesvm
 import torch
 import os.path
 import numpy as np
 
-def preprocessing(): 
-    if not os.path.isfile("./zad1/data/X_train.csv"):       
+def preprocessing():
+    if not os.path.isfile("./zad1/data/X_train.csv"):
         df = pd.read_csv("./zad1/data/emotions.csv")
         scaler = StandardScaler()
         df_2 = df.drop(["label"], axis=1)
@@ -45,3 +46,6 @@ if __name__ == '__main__':
     NN_classfier(X_train, X_test, y_train, y_test)
     print('Ensebly classifier no. 1: \n')
     kNNRFSVM(X_train, X_test, y_train, y_test)
+    print('Ensebly classifier no. 2: \n')
+    knntreesvm(X_train, X_test, y_train, y_test)
+    
