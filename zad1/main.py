@@ -9,7 +9,10 @@ import torch
 import os.path
 import numpy as np
 import sklearn.metrics as metrics
-import matplotlib as plt
+import matplotlib.pyplot as plt
+from sklearn.metrics import roc_curve, auc, RocCurveDisplay
+from itertools import cycle
+from dbscan import dbscan
 
 def preprocessing():
     if not os.path.isfile("./zad1/data/X_train.csv"):
@@ -37,16 +40,6 @@ def preprocessing():
         y_test = np.concatenate(y_test, axis=0)
         return X_train, X_test, y_train, y_test
 
-def roc(preds):
-    plt.figure(0).clf()
-    tab = ['NN', 'kNNRFSVM', 'knntreesvm', 'nbtree']
-    for i in range(len(preds)):
-        fpr, tpr, _ = metrics.roc_curve(y_test, preds[i])
-        auc = round(metrics.roc_auc_score(y_test, preds[i]), 4)
-        plt.plot(fpr,tpr,label=str(tab[i]) + ", AUC="+str(auc))
-
-    plt.legend()
-    plt.show()
 
 def run():
     torch.multiprocessing.freeze_support()
@@ -56,12 +49,15 @@ if __name__ == '__main__':
     preds = []
     X_train, X_test, y_train, y_test = preprocessing()
     print('Neural Network Classifier: \n')
-    preds.append(NN_classfier(X_train, X_test, y_train, y_test))
+    # preds.append(NN_classfier(X_train, X_test, y_train, y_test))
     print('Ensebly classifier no. 1: \n')
-    preds.append(kNNRFSVM(X_train, X_test, y_train, y_test))
+    # preds.append(kNNRFSVM(X_train, X_test, y_train, y_test))
     print('Ensebly classifier no. 2: \n')
     preds.append(knntreesvm(X_train, X_test, y_train, y_test))
     print('Ensebly classifier no. 3: \n')
     preds.append(nbtree(X_train, X_test, y_train, y_test))
-    roc(preds)
+    print('DBSCAN: \n')
+
+    dbscan(X_train, X_test, y_train, y_test)
+
     
