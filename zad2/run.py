@@ -30,15 +30,12 @@ def preprocessing():
             X = pd.DataFrame(scaler.fit_transform(df_2))
             y= df.iloc[:, -1:]
             split=StratifiedShuffleSplit(n_splits=10, test_size=0.2, random_state=9)
-            # train, test = split.split(X, y)
-
-            for train,test in split.split(X,y):     #this will splits the index
+            for train,test in split.split(X,y):     
                 X_train = X.iloc[train]
                 y_train = y.iloc[train]
                 X_test = X.iloc[test]
                 y_test = y.iloc[test]
-            print(y_train.value_counts())  
-            print(y_test.value_counts())
+           
             X_train = pd.DataFrame(X_train)
             X_test = pd.DataFrame(X_test)
             y_train = pd.DataFrame(y_train)
@@ -53,7 +50,7 @@ def preprocessing():
 
 
 path  = "./zad2/data/"
-# "creditcard.csv", 
+# , 
 files = ["dermatology.csv", "wine.csv"]
 preprocessing()
 
