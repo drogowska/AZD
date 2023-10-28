@@ -1,40 +1,76 @@
-import pandas as pan
+from matplotlib import pyplot as plt
+import pandas as pd
+from sklearn.manifold import TSNE
+from sklearn.model_selection import StratifiedShuffleSplit, train_test_split
 import dgsc
 from sklearn.preprocessing import StandardScaler
-import os
-import DBprep as db
-
-"""
-    path  (string) : ścieżka dostępu do katalogu zawierającego pliki baz danych
-    files (array)  : lista nawzw baz danych
-
-"""
+import os.path
+import numpy as np
+import seaborn as sns
 
 
+def visu(file):
+    # t-SNE Visualization
+    df = pd.read_csv(path + file, on_bad_lines='skip')
+    tsne = TSNE(n_components=2, random_state=42)
+    tsne_results = tsne.fit_transform(df.iloc[:, :-1])
+    tsne_df = pd.DataFrame(tsne_results, columns=['Dimension 1', 'Dimension 2'])
+    tsne_df['label'] = df.iloc[:, -1:]
+    plt.figure(figsize=(10, 8))
+    sns.scatterplot(x='Dimension 1', y='Dimension 2', hue='label', data=tsne_df, palette='viridis')
+    plt.show()
 
-path  = "E:\GM\src\databases\pure"
-files = ["cardio", "vowels", "musk", "synthetic", "chemical", "MNIST0"]
-db_path = os.path.join(path, "db")
 
-os.mkdir(db_path)
+def preprocessing():
+    if not os.path.isfile(path + "X_trainwine.csv"):
+        for file in files:
+            df = pd.read_csv(path + file, on_bad_lines='skip')
+            scaler = StandardScaler()
+            df_2 = df.iloc[:, :-1]
+            X = pd.DataFrame(scaler.fit_transform(df_2))
+            y= df.iloc[:, -1:]
+            split=StratifiedShuffleSplit(n_splits=10, test_size=0.2, random_state=9)
+            # train, test = split.split(X, y)
+
+            for train,test in split.split(X,y):     #this will splits the index
+                X_train = X.iloc[train]
+                y_train = y.iloc[train]
+                X_test = X.iloc[test]
+                y_test = y.iloc[test]
+            print(y_train.value_counts())  
+            print(y_test.value_counts())
+            X_train = pd.DataFrame(X_train)
+            X_test = pd.DataFrame(X_test)
+            y_train = pd.DataFrame(y_train)
+            y_test = pd.DataFrame(y_test)
+            X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.8, random_state=48)
+            X_train.to_csv(path + 'X_train' + file)
+            X_test.to_csv(path + 'X_test' + file)
+            y_train.to_csv(path + 'Y_train' + file)
+            y_test.to_csv(path + 'Y_test' + file)
 
 
-file = files[3]
+
+
+path  = "./zad2/data/"
+# "creditcard.csv", 
+files = ["dermatology.csv", "wine.csv"]
+preprocessing()
+
 for file in files:
     print("Baza danych : " + file)
+    visu(file)
+    X_train = pd.read_csv(path + 'X_train' + file).values[:,1:]
+    X_test = pd.read_csv(path + 'X_test' + file).values[:,1:]
+    y_train = pd.read_csv(path + 'Y_train' + file).values[:,1:]
+    y_test = pd.read_csv(path + 'Y_test' + file).values[:,1:]
 
-    X = pan.read_csv(path + file + "X.csv")
-    X = pan.DataFrame(StandardScaler().fit_transform(X.values))
-    Y = pan.read_csv(path + file + "Y.csv") 
-    train, test = help.split_to_train(X, Y)
-    dimensions = len(test.values[0]) - 1
-    x = test.values[:,:dimensions]
-    y = test.values[:,dimensions:]
-
-
+    y_train = np.concatenate(y_train, axis=0)
+    y_test = np.concatenate(y_test, axis=0)
 
     print('DGSC:')
-    gm = dgsc.DGSC(dimensions)
-    res_dgsc = gm.classify(train, test)
-    help.show_results(res_dgsc, y, x, 'DGSC')
+    gm = dgsc.DGSC(len(X_train[0]), len(np.unique(y_train)))
+    res_dgsc = gm.classify(x_test=X_test,x_train=X_train, y_train=y_train, y_test=y_test)
+    gm.show_outliers(x_test=X_test)
+    # help.show_results(res_dgsc, y, x, 'DGSC')
 
