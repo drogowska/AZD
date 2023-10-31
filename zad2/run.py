@@ -7,7 +7,7 @@ from sklearn.preprocessing import StandardScaler
 import os.path
 import numpy as np
 import seaborn as sns
-
+import ABOD
 
 def visu(file):
     # t-SNE Visualization
@@ -69,5 +69,7 @@ for file in files:
     gm = dgsc.DGSC(len(X_train[0]), len(np.unique(y_train)))
     res_dgsc = gm.classify(x_test=X_test,x_train=X_train, y_train=y_train, y_test=y_test)
     gm.show_outliers(x_test=X_test)
-    # help.show_results(res_dgsc, y, x, 'DGSC')
 
+
+    print("ABOD: \n")
+    ABOD.abod(x_test=X_test,x_train=X_train, y_train=y_train, y_test=y_test)

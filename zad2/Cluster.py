@@ -28,9 +28,9 @@ class Cluster:
         self.dimensions = dimensions
         self.data = []
         self.size = 0
-        self.n = .01 
-        self.m = .001  
-        self.min_force = -1000   
+        self.n = .001 
+        self.m = .0001  
+        self.min_force = -999   
 
         c = []
         for i in range(dimensions):
@@ -103,9 +103,9 @@ class Cluster:
     def get_center_distance(self, d):
         return math.dist(d, self.c)
             
-    def find_min_force(self): 
+    def find_min_force(self, data): 
         tmp = []
-        for i in self.data:
+        for i in data:
             tmp.append(self.force(i))
         self.min_force = min(tmp)
             
