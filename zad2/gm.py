@@ -152,7 +152,7 @@ class GM(ABC):
                 pred.append(i)
 
 
-        tsne = TSNE(n_components=2, random_state=42)
+        tsne = TSNE(n_components=2, random_state=42, perplexity=20)
         tsne_results = tsne.fit_transform(x_test)
         tsne_df = pd.DataFrame(tsne_results, columns=['Dimension 1', 'Dimension 2'])
         tsne_df['label'] = pred

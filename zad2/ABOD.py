@@ -15,7 +15,7 @@ def abod(x_test,x_train, y_train, y_test):
     y_test_scores = abod.decision_function(x_test)  
   
     # print(y_test_scores)
-    tsne = TSNE(n_components=2, random_state=42)
+    tsne = TSNE(n_components=2, random_state=42, perplexity=20)
     tsne_results = tsne.fit_transform(x_test)
     tsne_df = pd.DataFrame(tsne_results, columns=['Dimension 1', 'Dimension 2'])
     tsne_df['label'] = y_test_pred

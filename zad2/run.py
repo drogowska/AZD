@@ -1,5 +1,6 @@
 from matplotlib import pyplot as plt
 import pandas as pd
+from sklearn.calibration import LabelEncoder
 from sklearn.manifold import TSNE
 from sklearn.model_selection import StratifiedShuffleSplit, train_test_split
 import dgsc
@@ -12,7 +13,7 @@ import ABOD
 def visu(file):
     # t-SNE Visualization
     df = pd.read_csv(path + file, on_bad_lines='skip')
-    tsne = TSNE(n_components=2, random_state=42)
+    tsne = TSNE(n_components=2, random_state=42, perplexity=20)
     tsne_results = tsne.fit_transform(df.iloc[:, :-1])
     tsne_df = pd.DataFrame(tsne_results, columns=['Dimension 1', 'Dimension 2'])
     tsne_df['label'] = df.iloc[:, -1:]
@@ -25,6 +26,11 @@ def preprocessing():
     if not os.path.isfile(path + "X_trainwine.csv"):
         for file in files:
             df = pd.read_csv(path + file, on_bad_lines='skip')
+            if file == "iris.csv":
+                label_e = LabelEncoder()
+                df[df.columns[4]] =label_e.fit_transform(df.iloc[:,-1]) 
+                df[df.columns[4]] = df[df.columns[4]] + 1
+
             scaler = StandardScaler()
             df_2 = df.iloc[:, :-1]
             X = pd.DataFrame(scaler.fit_transform(df_2))
@@ -51,7 +57,7 @@ def preprocessing():
 
 path  = "./zad2/data/"
 # , 
-files = ["dermatology.csv", "wine.csv"]
+files = ["iris.csv","dermatology.csv", "wine.csv"]
 preprocessing()
 
 for file in files:
