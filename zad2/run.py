@@ -9,6 +9,7 @@ import os.path
 import numpy as np
 import seaborn as sns
 import ABOD
+from bnl import BNL
 
 def visu(file):
     # t-SNE Visualization
@@ -55,7 +56,7 @@ def preprocessing():
 
 
 
-path  = "./zad2/data/"
+path  = "./data/"
 # , 
 files = ["iris.csv","dermatology.csv", "wine.csv"]
 preprocessing()
@@ -79,3 +80,7 @@ for file in files:
 
     print("ABOD: \n")
     ABOD.abod(x_test=X_test,x_train=X_train, y_train=y_train, y_test=y_test)
+
+    print("BNL: \n")
+    BNL(X_test)
+
