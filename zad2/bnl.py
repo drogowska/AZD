@@ -97,7 +97,7 @@ def BNL(X_test):
 
     ### Set the Parameters and Threshold
     stages = 4  # Fixed
-    num_points_threshold = 3  # <==
+    num_points_threshold = 4  # <==
     distance_threshold = 3  # <==
     all_outlier_list = []  # Records all the Outlier Points determined from each Stage
 
@@ -133,6 +133,7 @@ def BNL(X_test):
     s = tsne_df.merge(tsne_dfo, left_on=['Dimensiona', 'Dimensionb'], right_on=['Dimensionoa', 'Dimensionob'],
                       how='left')
     s["label"] = s.Dimensionoa.notnull().astype(int)
+    s["label"] = s["label"].apply(lambda x: 0 if x == 1 else 1)
     plt.figure(figsize=(10, 8))
     sns.scatterplot(x='Dimensiona', y='Dimensionb', hue='label', data=s, palette='viridis')
     plt.show()
