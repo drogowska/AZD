@@ -62,8 +62,8 @@ def preprocessing():
 
 
 def build_tuple(file) -> Tuple[np.ndarray,np.ndarray]:
-    X = pd.read_csv(path + 'X' + file).values[:, 1:]
-    y = pd.read_csv(path + 'Y' + file).values[:, 1:].squeeze().astype(np.int32)
+    X = pd.read_csv(path + 'X_test' + file).values[:, 1:]
+    y = pd.read_csv(path + 'Y_test' + file).values[:, 1:].squeeze().astype(np.int32)
     return X,y
 
 
@@ -73,10 +73,10 @@ path  = "./data/"
 # , 
 files = ["dermatology.csv", "wine.csv"]
 kmeans_n_clusters=20
-kmeans_fraction_threshold=0.03
-cmeans_n_clusters=20
-cmeans_fraction_threshold=0.03
-hk_threshold_distance=0.1
+kmeans_fraction_threshold=0.01
+cmeans_n_clusters=10
+cmeans_fraction_threshold=0.37
+hk_threshold_distance=0.11
 hk_threshold_cluster=3
 preprocessing()
 

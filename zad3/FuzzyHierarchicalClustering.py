@@ -3,7 +3,8 @@ import numpy as np
 from scipy.spatial.distance import cdist
 from scipy.cluster.hierarchy import fcluster, linkage
 import matplotlib.pyplot as plt
-
+import pandas as pd
+from sklearn.manifold import TSNE
 
 
 def fuzzy_hierarchical_clustering(data, threshold_cluster):
@@ -46,13 +47,15 @@ def FuzzyOutlierDetection(X_train, X_test, y_test, threshold, threshold_cluster,
 
     # Classify the test data as normal or anomaly based on the threshold score
     y_pred = (scores >= threshold).astype(int)
-    #print(scores)
-    #print(y_pred)
     # Plot the results
+
+    if X_test[0].size > 2:
+        X_test = TSNE().fit_transform(X_test)
+
     plt.figure(figsize=(10, 6))
     plt.scatter(X_test[:, 0], X_test[:, 1], c=y_pred)
     for label in set(np.unique(y_pred)) - {-1}:
         plt.scatter(X_test[y_pred == label, 0], X_test[y_pred == label, 1])
 
-    plt.title('Fuzzy Hierarchical Clustering for Outlier Detection ' + file)
+    plt.title(file + ' Fuzzy Hierarchical Clustering ' + 'Cluster threshold ' + str(threshold_cluster) + ' fraction_threshold ' + str(threshold))
     plt.show()
